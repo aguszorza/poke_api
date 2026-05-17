@@ -18,6 +18,12 @@ pip install -r requirements.txt
 # run migrations
 python manage.py migrate
 
+# Populate with pokemon types
+python manage.py create_pokemon_types
+
+# Populate with some pokemons
+python manage.py create_pokemons
+
 # Run application
 python manage.py runserver 8001
 ```

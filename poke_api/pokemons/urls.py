@@ -1,6 +1,6 @@
 from django.urls import path
-from pokemons.views import ProtectedView
+from pokemons.views import PokemonListView
 
 urlpatterns = [
-    path('protected/', ProtectedView.as_view(), name='protected'),
+    path('pokemon/', PokemonListView.as_view(), name='pokemons'),
 ]
