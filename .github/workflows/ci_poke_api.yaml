@@ -5,6 +5,8 @@ on:
     branches:
       # run always in main branch
       - main
+    paths:
+      - "**"
 
   push:
     # run in other branches if there was a change on poke_api directory
