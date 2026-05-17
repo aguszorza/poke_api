@@ -2,18 +2,6 @@ name: Python Tests
 
 on:
   push:
-    branches:
-      # run always in main branch
-      - main
-    paths:
-      - "**"
-
-  push:
-    # run in other branches if there was a change on access_management directory
-    branches-ignore:
-      - main
-    paths:
-      - "access_management/**"
 
 jobs:
   test:
