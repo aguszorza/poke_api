@@ -5,6 +5,37 @@ from rest_framework import status
 
 
 @pytest.mark.unit
+class TestLogin:
+    def test_login_invalid_credentials(self, authenticated_client):
+        current_user = User.objects.first()
+        data = {
+            "username": current_user.username,
+            "password": "fake_invalid"
+        }
+
+        response = authenticated_client.post("/api/login/", data=data)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_login_valid_credentials(self, authenticated_client):
+        username = "my_user"
+        fake_password = "fake_password"
+        user = User.objects.create(username=username, email="my_user@mail.com")
+        user.set_password(fake_password)
+        user.save()
+        data = {
+            "username": username,
+            "password": fake_password
+        }
+
+        response = authenticated_client.post("/api/login/", data=data)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "access_token" in response.data
+        assert "refresh_token" in response.data
+
+
+@pytest.mark.unit
 class TestUserMe:
     def test_get_profile_authenticated(self, authenticated_client):
         response = authenticated_client.get("/api/user/me/")
