@@ -8,18 +8,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from accounts.serializers import UserSerializer
 
 logger = logging.getLogger(__name__)
-
-
-def format_user(user: User):
-    user_groups = [group.name for group in user.groups.all()]
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "types": user_groups
-    }
 
 
 class LoginView(APIView):
@@ -48,7 +39,7 @@ class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response(format_user(request.user))
+        return Response(UserSerializer(request.user).data)
 
 
 class AddToGroupView(APIView):
@@ -67,7 +58,7 @@ class AddToGroupView(APIView):
         request.user.groups.add(pokemon_type)
         logger.info(f"user {request.user.username} added to group {type_name}")
 
-        return Response(format_user(request.user))
+        return Response(UserSerializer(request.user).data)
 
 
 class RemoveFromGroupView(APIView):
