@@ -26,6 +26,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-tests.txt
 
+      # TODO: add linting check
+
       - name: Run tests
         run: |
           pytest
