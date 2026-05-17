@@ -17,4 +17,5 @@ class TestProtectedEndpoint:
     def test_get_unauthenticated(self, api_client):
         response = api_client.get("/api/protected/")
 
+        # TODO: check why it returns 403 instead of 401
         assert response.status_code == status.HTTP_403_FORBIDDEN

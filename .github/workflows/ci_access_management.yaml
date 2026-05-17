@@ -8,7 +8,7 @@ defaults:
     working-directory: ./access_management
 
 jobs:
-  test:
+  test_access_management:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-tests.txt
 
+      # TODO: add linting check
+
       - name: Run tests
         run: |
-          pytest
+          pytest --cov-fail-under=80

@@ -32,6 +32,7 @@ DEBUG = CONFIG.DEBUG
 
 ALLOWED_HOSTS = CONFIG.ALLOWED_HOSTS
 
+LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
 # Application definition
 
@@ -137,4 +138,38 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=CONFIG.ACCESS_TOKEN_LIFETIME_MINUTES)
+}
+
+# Logging config
+# TODO: add config for prod logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    "formatters": {
+        "standard": {
+            "format": "[{levelname}] {asctime} {name}: {message}",
+            "style": "{",
+        },
+    },
+
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL,
+    },
+
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+    },
 }
