@@ -32,6 +32,16 @@ class MockResponse:
 
 @pytest.fixture
 def mock_auth_api(monkeypatch):
+    response_data = {
+        "id": 1,
+        "email": "john@example.com",
+        "username": "john",
+        "types": []
+    }
+
+    def set_response(new_data):
+        nonlocal response_data
+        response_data = new_data
 
     def mock_get(url, headers=None, timeout=None):
         token = headers.get("Authorization")
@@ -39,12 +49,10 @@ def mock_auth_api(monkeypatch):
         if token == FAKE_AUTH_HEADER:
             return MockResponse(
                 200,
-                {
-                    "id": 1,
-                    "email": "john@example.com",
-                    "username": "john",
-                }
+                response_data
             )
         raise requests.exceptions.HTTPError("Invalid token")
 
     monkeypatch.setattr(requests, "get", mock_get)
+
+    return set_response
