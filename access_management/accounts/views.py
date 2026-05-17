@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group, User
 from rest_framework.views import APIView
@@ -5,6 +7,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+
+
+logger = logging.getLogger(__name__)
 
 
 def format_user(user: User):
@@ -60,6 +65,7 @@ class AddToGroupView(APIView):
 
         # Add user to group/pokemon type
         request.user.groups.add(pokemon_type)
+        logger.info(f"user {request.user.username} added to group {type_name}")
 
         return Response(format_user(request.user))
 
@@ -74,5 +80,6 @@ class RemoveFromGroupView(APIView):
 
         # Remove from group
         request.user.groups.remove(pokemon_type)
+        logger.info(f"user {request.user.username} removed from group {type_name}")
 
         return Response(status=status.HTTP_204_NO_CONTENT)
