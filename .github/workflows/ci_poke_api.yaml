@@ -8,7 +8,7 @@ defaults:
     working-directory: ./poke_api
 
 jobs:
-  test:
+  test_poke_api:
     runs-on: ubuntu-latest
 
     steps:

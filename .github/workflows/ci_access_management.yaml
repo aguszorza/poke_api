@@ -8,7 +8,7 @@ defaults:
     working-directory: ./access_management
 
 jobs:
-  test:
+  test_access_management:
     runs-on: ubuntu-latest
 
     steps:
