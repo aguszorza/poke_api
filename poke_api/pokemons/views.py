@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from pokemons.models import Pokemon
+from pokemons.serializers import PokemonSerializer
 
 
 def format_pokemon(pokemon: Pokemon) -> dict:
@@ -21,7 +22,8 @@ class PokemonListView(APIView):
     def get(self, request):
         user_types = request.user.types
         pokemons = Pokemon.objects.filter(types__name__in=user_types).distinct()
-        return Response({"pokemons": [format_pokemon(pokemon) for pokemon in pokemons]})
+        data = PokemonSerializer(pokemons, many=True)
+        return Response({"pokemons": data.data})
 
 
 class PokemonGetView(APIView):
@@ -43,4 +45,5 @@ class PokemonGetView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        return Response(format_pokemon(pokemon))
+        data = PokemonSerializer(pokemon)
+        return Response(data.data)
