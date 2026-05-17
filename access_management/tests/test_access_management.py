@@ -1,4 +1,4 @@
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 import pytest
 
 from rest_framework import status
@@ -15,7 +15,6 @@ class TestUserMe:
         assert "username" in response.data
         assert "email" in response.data
 
-
     def test_get_profile_unauthenticated(self, api_client):
         response = api_client.get("/api/user/me/")
 
@@ -23,7 +22,7 @@ class TestUserMe:
 
 
 @pytest.mark.unit
-class TestAddGroup:
+class TestAddToGroup:
     def test_add_unknown_group(self, authenticated_client):
         response = authenticated_client.post("/api/group/unknown/add/")
 
@@ -72,5 +71,76 @@ class TestAddGroup:
 
     def test_add_group_unauthenticated(self, api_client):
         response = api_client.post("/api/group/water/add/")
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.unit
+class TestRemoveFromGroup:
+    def test_remove_from_unknown_group_works(self, authenticated_client):
+        response = authenticated_client.post("/api/group/unknown/remove/")
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+        assert response.data is None
+
+    def test_remove_from_existing_group_removes_group(self, authenticated_client):
+        water_type = Group.objects.create(name='water')
+        fire_type = Group.objects.create(name='fire')
+        current_user  = User.objects.first()
+        current_user.groups.add(water_type)
+        current_user.groups.add(fire_type)
+        assert current_user.groups.contains(fire_type) is True
+        assert current_user.groups.contains(water_type) is True
+
+        response = authenticated_client.post("/api/group/water/remove/")
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert response.data is None
+        assert current_user.groups.contains(fire_type) is True
+        assert current_user.groups.contains(water_type) is False
+    
+    def test_remove_multiple_times_from_same_group(self, authenticated_client):
+        water_type = Group.objects.create(name='water')
+        fire_type = Group.objects.create(name='fire')
+        current_user  = User.objects.first()
+        current_user.groups.add(water_type)
+        current_user.groups.add(fire_type)
+        assert current_user.groups.contains(fire_type) is True
+        assert current_user.groups.contains(water_type) is True
+
+        responses = [
+            authenticated_client.post("/api/group/water/remove/"),
+            authenticated_client.post("/api/group/water/remove/"),
+            authenticated_client.post("/api/group/water/remove/"),
+        ]
+
+
+        assert all([response.status_code == status.HTTP_204_NO_CONTENT for response in responses]) is True
+        assert current_user.groups.contains(fire_type) is True
+        assert current_user.groups.contains(water_type) is False
+
+    def test_remove_from_multiple_groups(self, authenticated_client):
+        water_type = Group.objects.create(name='water')
+        fire_type = Group.objects.create(name='fire')
+        earth_type = Group.objects.create(name='earth')
+        current_user  = User.objects.first()
+        current_user.groups.add(water_type)
+        current_user.groups.add(fire_type)
+        current_user.groups.add(earth_type)
+
+        responses = [
+            authenticated_client.post("/api/group/water/remove/"),
+            authenticated_client.post("/api/group/fire/remove/"),
+        ]
+
+
+        assert all([response.status_code == status.HTTP_204_NO_CONTENT for response in responses]) is True
+        assert current_user.groups.contains(fire_type) is False
+        assert current_user.groups.contains(water_type) is False
+        assert current_user.groups.contains(earth_type) is True
+
+    def test_remove_from_group_unauthenticated(self, api_client):
+        response = api_client.post("/api/group/water/remove/")
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED

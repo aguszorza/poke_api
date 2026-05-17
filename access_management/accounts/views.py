@@ -46,7 +46,7 @@ class UserView(APIView):
         return Response(format_user(request.user))
 
 
-class AddGroupView(APIView):
+class AddToGroupView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, type_name):
@@ -62,3 +62,17 @@ class AddGroupView(APIView):
         request.user.groups.add(pokemon_type)
 
         return Response(format_user(request.user))
+
+
+class RemoveFromGroupView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, type_name):
+        pokemon_type = Group.objects.filter(name=type_name).first()
+        if pokemon_type is None:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # Remove from group
+        request.user.groups.remove(pokemon_type)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
