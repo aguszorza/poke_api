@@ -3,6 +3,10 @@ name: Python Tests
 on:
   push:
 
+defaults:
+  run:
+    working-directory: ./access_management
+
 jobs:
   test:
     runs-on: ubuntu-latest
