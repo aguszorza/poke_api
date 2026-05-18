@@ -26,7 +26,13 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-tests.txt
 
-      # TODO: add linting check
+      - name: Run Black
+        run: |
+          black --check .
+
+      - name: Run Flake8
+        run: |
+          flake8 .
 
       - name: Run tests
         run: |

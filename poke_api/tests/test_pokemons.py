@@ -25,14 +25,7 @@ class TestListPokemonEndpoint:
         assert response.data["pokemons"] == []
 
     def test_get_pokemons_user_with_one_type(self, authenticated_client, mock_auth_api):
-        mock_auth_api(
-            {
-                "id": 1,
-                "email": "john@example.com",
-                "username": "john",
-                "types": ["fire"]
-            }
-        )
+        mock_auth_api({"id": 1, "email": "john@example.com", "username": "john", "types": ["fire"]})
         response = authenticated_client.get("/api/pokemon/")
 
         assert response.status_code == status.HTTP_200_OK
@@ -40,15 +33,10 @@ class TestListPokemonEndpoint:
         assert "pokemons" in response.data
         assert len(response.data["pokemons"]) == 1
         assert response.data["pokemons"][0]["name"] == self.first_pokemon.name
-    
+
     def test_get_pokemons_with_shared_type(self, authenticated_client, mock_auth_api):
         mock_auth_api(
-            {
-                "id": 1,
-                "email": "john@example.com",
-                "username": "john",
-                "types": ["fire", "flying"]
-            }
+            {"id": 1, "email": "john@example.com", "username": "john", "types": ["fire", "flying"]}
         )
         response = authenticated_client.get("/api/pokemon/")
 
@@ -86,28 +74,14 @@ class TestGetPokemonEndpoint:
         assert response.data["error"] == "Pokemon charizard Not Found"
 
     def test_get_pokemon_by_name(self, authenticated_client, mock_auth_api):
-        mock_auth_api(
-            {
-                "id": 1,
-                "email": "john@example.com",
-                "username": "john",
-                "types": ["fire"]
-            }
-        )
+        mock_auth_api({"id": 1, "email": "john@example.com", "username": "john", "types": ["fire"]})
         response = authenticated_client.get("/api/pokemon/charizard/")
 
         assert response.status_code == status.HTTP_200_OK
         assert response.data["name"] == self.pokemon.name
-    
+
     def test_get_pokemon_by_id(self, authenticated_client, mock_auth_api):
-        mock_auth_api(
-            {
-                "id": 1,
-                "email": "john@example.com",
-                "username": "john",
-                "types": ["fire"]
-            }
-        )
+        mock_auth_api({"id": 1, "email": "john@example.com", "username": "john", "types": ["fire"]})
         response = authenticated_client.get(f"/api/pokemon/{self.pokemon.id}/")
 
         assert response.status_code == status.HTTP_200_OK
@@ -115,12 +89,7 @@ class TestGetPokemonEndpoint:
 
     def test_get_pokemon_having_both_types(self, authenticated_client, mock_auth_api):
         mock_auth_api(
-            {
-                "id": 1,
-                "email": "john@example.com",
-                "username": "john",
-                "types": ["fire", "flying"]
-            }
+            {"id": 1, "email": "john@example.com", "username": "john", "types": ["fire", "flying"]}
         )
         response = authenticated_client.get("/api/pokemon/charizard/")
 

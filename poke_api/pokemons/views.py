@@ -9,11 +9,7 @@ from pokemons.serializers import PokemonSerializer
 
 def format_pokemon(pokemon: Pokemon) -> dict:
     pokemon_types = [pokemon_type.name for pokemon_type in pokemon.types.all()]
-    return {
-        "id": pokemon.id,
-        "name": pokemon.name,
-        "types": pokemon_types
-    }
+    return {"id": pokemon.id, "name": pokemon.name, "types": pokemon_types}
 
 
 class PokemonListView(APIView):
@@ -41,8 +37,7 @@ class PokemonGetView(APIView):
         pokemon = Pokemon.objects.filter(types__name__in=user_types, **id_filter).first()
         if pokemon is None:
             return Response(
-                {"error": f"Pokemon {pokemon_key} Not Found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"error": f"Pokemon {pokemon_key} Not Found"}, status=status.HTTP_404_NOT_FOUND
             )
 
         data = PokemonSerializer(pokemon)

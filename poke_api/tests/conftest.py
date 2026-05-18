@@ -3,7 +3,6 @@ import requests
 
 from rest_framework.test import APIClient
 
-
 FAKE_AUTH_HEADER = "Bearer 123456"
 
 
@@ -14,9 +13,7 @@ def api_client():
 
 @pytest.fixture
 def authenticated_client(api_client):
-    api_client.credentials(
-        HTTP_AUTHORIZATION=FAKE_AUTH_HEADER
-    )
+    api_client.credentials(HTTP_AUTHORIZATION=FAKE_AUTH_HEADER)
 
     return api_client
 
@@ -32,12 +29,7 @@ class MockResponse:
 
 @pytest.fixture
 def mock_auth_api(monkeypatch):
-    response_data = {
-        "id": 1,
-        "email": "john@example.com",
-        "username": "john",
-        "types": []
-    }
+    response_data = {"id": 1, "email": "john@example.com", "username": "john", "types": []}
 
     def set_response(new_data):
         nonlocal response_data
@@ -47,10 +39,7 @@ def mock_auth_api(monkeypatch):
         token = headers.get("Authorization")
 
         if token == FAKE_AUTH_HEADER:
-            return MockResponse(
-                200,
-                response_data
-            )
+            return MockResponse(200, response_data)
         raise requests.exceptions.HTTPError("Invalid token")
 
     monkeypatch.setattr(requests, "get", mock_get)
