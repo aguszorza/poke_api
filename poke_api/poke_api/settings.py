@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "pokemons",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -130,4 +131,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("authentication.authentication.RemoteJWTAuthentication",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Poke API",
+    "DESCRIPTION": "API documentation",
+    "VERSION": "0.1.0",
 }
