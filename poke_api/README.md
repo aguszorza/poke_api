@@ -12,8 +12,12 @@ This API has the information of the pokemons. The API will allow you to:
 python -m venv venv
 source venv/bin/activate
 
-# install dependencies
-pip install -r requirements.txt
+# install app dependencies
+pip install .
+
+# install app dependencies for development
+pip install -e .[test]
+
 
 # run migrations
 python manage.py migrate

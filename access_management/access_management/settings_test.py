@@ -1,4 +1,4 @@
-from access_management.settings import *
+from access_management.settings import *  # noqa: F401,F403
 
 DEBUG = True
 

@@ -6,6 +6,7 @@ from pokemons.management.commands.create_pokemon_types import pokemon_types
 from pokemons.management.commands.create_pokemons import pokemons
 from pokemons.models import Pokemon, PokemonType
 
+
 @pytest.mark.django_db
 def test_create_pokemon_types():
 

@@ -20,8 +20,6 @@ def user(db):
 def authenticated_client(api_client, user):
     refresh = RefreshToken.for_user(user)
 
-    api_client.credentials(
-        HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}"
-    )
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
 
     return api_client

@@ -21,3 +21,6 @@ class RemoteJWTAuthentication(BaseAuthentication):
 
         remote_user = RemoteUser(user_data)
         return (remote_user, None)
+
+    def authenticate_header(self, request):
+        return "Bearer"

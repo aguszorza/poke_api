@@ -1,0 +1,52 @@
+[project]
+name = "poke_api"
+version = "0.1.0"
+requires-python = ">=3.11"
+description = "API to obtain information of your pokemons"
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+test = [
+    "black",
+    "flake8",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "pytest-env"
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*"]
+
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+include = '\.pyi?$'
+exclude = '(\.git|\.venv|venv|_build|build|dist)'
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "poke_api.settings_test"
+python_files = ["tests.py", "test_*.py", "test_*.py"]
+testpaths = ["tests"]
+markers = ["unit"]
+env_files = [".env.test"]
+
+addopts = """
+--cov=poke_api
+--cov=authentication
+--cov=core
+--cov=pokemons
+--cov-report=term-missing
+--cov-report=xml
+--cov-report=html
+"""

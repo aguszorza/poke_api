@@ -1,4 +1,4 @@
-from poke_api.settings import *
+from poke_api.settings import *  # noqa: F401,F403
 
 DEBUG = True
 

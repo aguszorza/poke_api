@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from pokemons.models import Pokemon, PokemonType
 
-
 # obtained from https://pokeapi.co/api/v2/pokemon/<name>
 pokemons = [
     {"name": "ditto", "types": ["normal"]},
@@ -27,8 +26,6 @@ class Command(BaseCommand):
             pokemon.types.set(pokemon_types)
 
             if created:
-                self.stdout.write(
-                    self.style.SUCCESS(f"Created group: {pokemon_name}")
-                )
+                self.stdout.write(self.style.SUCCESS(f"Created group: {pokemon_name}"))
             else:
                 self.stdout.write(f"Pokemon already exists: {pokemon_name}")
