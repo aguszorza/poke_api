@@ -51,8 +51,7 @@ class TestListPokemonEndpoint:
     def test_get_unauthenticated(self, api_client):
         response = api_client.get("/api/pokemon/")
 
-        # TODO: check why it returns 403 instead of 401
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.unit
@@ -99,5 +98,4 @@ class TestGetPokemonEndpoint:
     def test_get_unauthenticated(self, api_client):
         response = api_client.get("/api/pokemon/charizard/")
 
-        # TODO: check why it returns 403 instead of 401
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
