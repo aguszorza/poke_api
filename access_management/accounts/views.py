@@ -2,17 +2,22 @@ import logging
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from accounts.serializers import UserSerializer
+from accounts.serializers import LoginInputSerializer, UserSerializer
 
 logger = logging.getLogger(__name__)
 
 
+@extend_schema(
+    request=LoginInputSerializer,
+    description="Login",
+)
 class LoginView(APIView):
 
     def post(self, request):
@@ -34,6 +39,10 @@ class LoginView(APIView):
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+@extend_schema(
+    responses=UserSerializer,
+    description="Returns the user details",
+)
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -41,6 +50,10 @@ class UserView(APIView):
         return Response(UserSerializer(request.user).data)
 
 
+@extend_schema(
+    responses=UserSerializer,
+    description="Add user to the group",
+)
 class AddToGroupView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -60,6 +73,10 @@ class AddToGroupView(APIView):
         return Response(UserSerializer(request.user).data)
 
 
+@extend_schema(
+    responses={204: OpenApiResponse(description="No content")},
+    description="Removes user from the group",
+)
 class RemoveFromGroupView(APIView):
     permission_classes = [IsAuthenticated]
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "accounts",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(minutes=CONFIG.ACCESS_TOKEN_LIFETIME_MINUTES)}
@@ -166,4 +168,11 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Access Management API",
+    "DESCRIPTION": "API documentation",
+    "VERSION": "0.1.0",
 }
