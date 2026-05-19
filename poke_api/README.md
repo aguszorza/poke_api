@@ -18,6 +18,7 @@ pip install .
 # install app dependencies for development
 pip install -e .[test]
 
+# create a .env file using the .env.test as example
 
 # run migrations
 python manage.py migrate
