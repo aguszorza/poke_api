@@ -14,3 +14,9 @@ class PokemonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pokemon
         fields = ["id", "name", "types"]
+
+
+class PokemonListSerializer(serializers.Serializer):
+    pokemons = PokemonSerializer(
+        many=True,
+    )
