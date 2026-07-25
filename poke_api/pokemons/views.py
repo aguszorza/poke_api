@@ -1,10 +1,11 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from pokemons.models import Pokemon
-from pokemons.serializers import PokemonSerializer
+from pokemons.serializers import PokemonListSerializer, PokemonSerializer
 
 
 def format_pokemon(pokemon: Pokemon) -> dict:
@@ -12,6 +13,10 @@ def format_pokemon(pokemon: Pokemon) -> dict:
     return {"id": pokemon.id, "name": pokemon.name, "types": pokemon_types}
 
 
+@extend_schema(
+    responses=PokemonListSerializer,
+    description="Returns the list of pokemons that belongs to your types",
+)
 class PokemonListView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -22,6 +27,10 @@ class PokemonListView(APIView):
         return Response({"pokemons": data.data})
 
 
+@extend_schema(
+    responses=PokemonSerializer,
+    description="Given the pokemon id or name, returns its data if it belongs to your type",
+)
 class PokemonGetView(APIView):
     permission_classes = [IsAuthenticated]
 

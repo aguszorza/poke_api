@@ -45,4 +45,7 @@ curl -X POST "http://localhost:8000/api/group/fire/remove/" -H "Authorization: B
 
 # Obtain user information
 curl -X GET "http://localhost:8000/api/user/me/" -H "Authorization: Bearer <your_token>"
+
+# Access to swagger from
+http://localhost:8000/api/docs/
 ```

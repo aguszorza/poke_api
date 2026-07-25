@@ -31,4 +31,7 @@ python manage.py create_pokemons
 
 # Run application
 python manage.py runserver 8001
+
+# Access to swagger from
+http://localhost:8001/api/docs/
 ```
