@@ -1,6 +1,6 @@
 # Poke API
 
-This API has the information of the pokemons. The API will allow you to:
+This API will search for the pokemons information in POKE API if the user has permissions to do it. The API will allow you to:
 
 * Return the list of pokemons you have acces to
 * Return the one pokemon you have acces to
@@ -19,15 +19,6 @@ pip install .
 pip install -e .[test]
 
 # create a .env file using the .env.test as example
-
-# run migrations
-python manage.py migrate
-
-# Populate with pokemon types
-python manage.py create_pokemon_types
-
-# Populate with some pokemons
-python manage.py create_pokemons
 
 # Run application
 python manage.py runserver 8001
