@@ -42,6 +42,6 @@ def mock_auth_api(monkeypatch):
             return MockResponse(200, response_data)
         raise requests.exceptions.HTTPError("Invalid token")
 
-    monkeypatch.setattr(requests, "get", mock_get)
+    monkeypatch.setattr("authentication.auth_client.requests.get", mock_get)
 
     return set_response
